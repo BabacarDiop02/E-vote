@@ -8,9 +8,20 @@ import lombok.*;
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
+
+    @Column(nullable = false, unique = true)
     private String nationalIdentificationNumber;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
-    private boolean enabled;
+
+    @Builder.Default
+    private boolean enabled = true;
 }
