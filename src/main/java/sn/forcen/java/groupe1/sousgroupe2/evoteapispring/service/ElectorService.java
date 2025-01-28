@@ -72,6 +72,8 @@ public class ElectorService {
     }
 
     public void deleteElectorById(int id) {
-        this.getElectorById(id).setEnabled(false);
+        Elector elector = this.getElectorById(id);
+        elector.setEnabled(false);
+        electorRepository.save(elector);
     }
 }
