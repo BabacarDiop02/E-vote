@@ -10,7 +10,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/e-vote/elector")
+@RequestMapping("api/e-vote/elector")
+@CrossOrigin("*")
 public class ElectorController {
     private final ElectorService electorService;
 
