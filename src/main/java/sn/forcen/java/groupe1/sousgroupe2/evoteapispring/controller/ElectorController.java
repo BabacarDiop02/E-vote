@@ -1,5 +1,6 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/e-vote/elector")
+@RequestMapping(path = "api/e-vote/elector")
 @CrossOrigin("*")
 public class ElectorController {
     private final ElectorService electorService;
@@ -26,10 +27,10 @@ public class ElectorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Elector> getElectorById(@PathVariable Long id) {
+    public ResponseEntity<?> getElectorById(@PathVariable int id) {
         Elector elector = electorService.getElectorById(id);
         if (elector == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Elector not found!");
         } else {
             return ResponseEntity.ok(elector);
         }
@@ -58,7 +59,7 @@ public class ElectorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteElector(@PathVariable Long id) {
+    public ResponseEntity<String> deleteElector(@PathVariable int id) {
         electorService.deleteElectorById(id);
         return ResponseEntity.ok("Elector deleted successfully");
     }

@@ -20,9 +20,9 @@ import java.util.Date;
 @NoArgsConstructor @AllArgsConstructor @Getter @Setter @ToString @Builder
 public class Elector {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "elector_id")
-    private Long id;
+    private int id;
 
     @Column(name = "numero_identification_national", nullable = false, unique = true)
     private String nationalIdentificationNumber;
@@ -50,6 +50,9 @@ public class Elector {
 
     @Column(name = "departement", nullable = false)
     private String department;
+
+    @Column(name = "arrondissement", nullable = false)
+    private String borough;
 
     @Column(name = "commun", nullable = false)
     private String town;

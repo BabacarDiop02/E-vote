@@ -7,8 +7,8 @@ import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Elector;
 import java.util.List;
 
 @Repository
-public interface ElectorRepository extends JpaRepository<Elector, Long> {
+public interface ElectorRepository extends JpaRepository<Elector, Integer> {
     Elector findByNationalIdentificationNumber(String nationalIdentificationNumber);
     List<Elector> findByEnabledTrue();
-    Elector findByIdAndEnabledTrue(Long id);
+    Elector findByIdAndEnabledTrue(int id);
 }

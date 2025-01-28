@@ -25,7 +25,7 @@ public class ElectorService {
         return electorRepository.findByEnabledTrue();
     }
 
-    public Elector getElectorById(Long id) {
+    public Elector getElectorById(int id) {
         return electorRepository.findByIdAndEnabledTrue(id);
     }
 
@@ -59,9 +59,10 @@ public class ElectorService {
             elector.setVoterNumber(row.getCell(5).getStringCellValue());
             elector.setRegion(row.getCell(6).getStringCellValue());
             elector.setDepartment(row.getCell(7).getStringCellValue());
-            elector.setTown(row.getCell(8).getStringCellValue());
-            elector.setVotingPlace(row.getCell(9).getStringCellValue());
-            elector.setPollingStation((long) row.getCell(10).getNumericCellValue());
+            elector.setBorough(row.getCell(8).getStringCellValue());
+            elector.setTown(row.getCell(9).getStringCellValue());
+            elector.setVotingPlace(row.getCell(10).getStringCellValue());
+            elector.setPollingStation((long) row.getCell(11).getNumericCellValue());
 
             electors.add(elector);
         }
@@ -70,8 +71,7 @@ public class ElectorService {
         workbook.close();
     }
 
-    public void deleteElectorById(Long id) {
-        Elector elector = this.getElectorById(id);
-        elector.setEnabled(false);
+    public void deleteElectorById(int id) {
+        this.getElectorById(id).setEnabled(false);
     }
 }
