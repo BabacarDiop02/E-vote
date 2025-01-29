@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Elector;
+import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.ElectorDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.ElectorService;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "api/e-vote")
@@ -30,31 +30,31 @@ public class ElectorController {
     }
 
     @GetMapping(path = "/electors")
-    public ResponseEntity<List<Elector>> getAllElector() {
-        List<Elector> electors = this.electorService.getAllElector();
-        return ResponseEntity.ok(electors);
+    public ResponseEntity<Set<ElectorDTO>> getAllElector() {
+        Set<ElectorDTO> electorsDTO = this.electorService.getAllElector();
+        return ResponseEntity.ok(electorsDTO);
     }
 
     @GetMapping("/elector/{id}")
     public ResponseEntity<?> getElectorById(@PathVariable int id) {
-        Elector elector = this.electorService.getElectorById(id);
-        if (elector == null) {
+        ElectorDTO electorDTO = this.electorService.getElectorById(id);
+        if (electorDTO == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Elector not found!");
         } else {
-            return ResponseEntity.ok(elector);
+            return ResponseEntity.ok(electorDTO);
         }
     }
 
     @PostMapping(path = "/create-elector")
-    public ResponseEntity<Elector> createElector(@RequestBody Elector elector) {
-        Elector newelector = this.electorService.addElector(elector);
-        return ResponseEntity.ok(newelector);
+    public ResponseEntity<ElectorDTO> createElector(@RequestBody ElectorDTO electorDTO) {
+        ElectorDTO newelectorDTO = this.electorService.addElector(electorDTO);
+        return ResponseEntity.ok(newelectorDTO);
     }
 
     @PutMapping(path = "/update-elector")
-    public ResponseEntity<Elector> updateElector(@RequestBody Elector elector) {
-        Elector electorUpdated = this.electorService.updateElector(elector);
-        return ResponseEntity.ok(electorUpdated);
+    public ResponseEntity<ElectorDTO> updateElector(@RequestBody ElectorDTO electorDTO) {
+        ElectorDTO electorDTOUpdated = this.electorService.updateElector(electorDTO);
+        return ResponseEntity.ok(electorDTOUpdated);
     }
 
     @PostMapping("/import-electors")
