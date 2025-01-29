@@ -22,7 +22,7 @@ public class CandidateService {
 
     public Set<CandidateDTO> getAllCandidates() {
         List<Candidate> candidates = this.candidateRepository.findByEnabledTrue();
-        return candidates.stream().map(candidateMapper::toDTO).collect(Collectors.toSet());
+        return candidates.stream().map(this.candidateMapper::toDTO).collect(Collectors.toSet());
     }
 
     public CandidateDTO getCandidateById(int id) {
@@ -31,8 +31,7 @@ public class CandidateService {
 
     public CandidateDTO createCandidate(CandidateDTO candidateDTO) {
         Candidate candidate = this.candidateMapper.toEntity(candidateDTO);
-        this.candidateRepository.save(candidate);
-        return this.candidateMapper.toDTO(candidate);
+        return this.candidateMapper.toDTO(this.candidateRepository.save(candidate));
     }
 
     public CandidateDTO updateCandidate(CandidateDTO candidateDTO) {

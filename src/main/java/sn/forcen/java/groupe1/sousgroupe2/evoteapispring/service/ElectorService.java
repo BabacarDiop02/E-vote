@@ -6,37 +6,46 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.ElectorDTO;
+import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.mapper.ElectorMapper;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Elector;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.repository.ElectorRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ElectorService {
     private final ElectorRepository electorRepository;
+    private final ElectorMapper electorMapper;
 
-    public ElectorService(ElectorRepository electorRepository) {
+    public ElectorService(ElectorRepository electorRepository, ElectorMapper electorMapper) {
         this.electorRepository = electorRepository;
+        this.electorMapper = electorMapper;
     }
 
-    public List<Elector> getAllElector() {
-        return this.electorRepository.findByEnabledTrue();
+    public Set<ElectorDTO> getAllElector() {
+        List<Elector> electors = this.electorRepository.findByEnabledTrue();
+        return electors.stream().map(this.electorMapper::toElectorDTO).collect(Collectors.toSet());
     }
 
-    public Elector getElectorById(int id) {
-        return this.electorRepository.findByIdAndEnabledTrue(id);
+    public ElectorDTO getElectorById(int id) {
+        return this.electorMapper.toElectorDTO(this.electorRepository.findByIdAndEnabledTrue(id).orElseThrow(() -> new RuntimeException("Elector not found")));
     }
 
-    public Elector addElector(Elector elector) {
-        return this.electorRepository.save(elector);
+    public ElectorDTO addElector(ElectorDTO electorDTO) {
+        Elector elector = this.electorMapper.toElector(electorDTO);
+        return this.electorMapper.toElectorDTO(this.electorRepository.save(elector));
     }
 
-    public Elector updateElector(Elector elector) {
-        Elector electorToUpdate = this.getElectorById(elector.getId());
+    public ElectorDTO updateElector(ElectorDTO electorDTO) {
+        ElectorDTO electorToUpdate = this.getElectorById(electorDTO.getId());
         if (electorToUpdate != null) {
-            return this.electorRepository.save(elector);
+            Elector elector = this.electorMapper.toElector(electorDTO);
+            return this.electorMapper.toElectorDTO(this.electorRepository.save(elector));
         } else {
             throw new RuntimeException("Elector not found");
         }
@@ -72,7 +81,7 @@ public class ElectorService {
     }
 
     public void deleteElectorById(int id) {
-        Elector elector = this.getElectorById(id);
+        Elector elector = this.electorRepository.findByIdAndEnabledTrue(id).orElseThrow(() -> new RuntimeException("Elector not found"));
         elector.setEnabled(false);
         electorRepository.save(elector);
     }

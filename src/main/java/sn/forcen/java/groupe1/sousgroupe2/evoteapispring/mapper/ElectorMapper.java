@@ -1,6 +1,7 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.mapper;
 
-import org.springframework.web.bind.annotation.Mapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.ElectorDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Elector;
 
