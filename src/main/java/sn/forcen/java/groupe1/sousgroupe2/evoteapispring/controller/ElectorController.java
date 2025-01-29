@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/e-vote/elector")
+@RequestMapping(path = "api/e-vote")
 @CrossOrigin("*")
 public class ElectorController {
     private final ElectorService electorService;
@@ -20,13 +20,13 @@ public class ElectorController {
         this.electorService = electorService;
     }
 
-    @GetMapping
+    @GetMapping(path = "/electors")
     public ResponseEntity<List<Elector>> getAllElector() {
         List<Elector> electors = electorService.getAllElector();
         return ResponseEntity.ok(electors);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/elector/{id}")
     public ResponseEntity<?> getElectorById(@PathVariable int id) {
         Elector elector = electorService.getElectorById(id);
         if (elector == null) {
@@ -36,19 +36,19 @@ public class ElectorController {
         }
     }
 
-    @PostMapping
+    @PostMapping(path = "/create-elector")
     public ResponseEntity<Elector> createElector(@RequestBody Elector elector) {
         Elector newelector = electorService.addElector(elector);
         return ResponseEntity.ok(newelector);
     }
 
-    @PutMapping
+    @PutMapping(path = "/update-elector")
     public ResponseEntity<Elector> updateElector(@RequestBody Elector elector) {
         Elector electorUpdated = electorService.updateElector(elector);
         return ResponseEntity.ok(electorUpdated);
     }
 
-    @PostMapping("/import")
+    @PostMapping("/import-electors")
     public ResponseEntity<String> importElectors(@RequestParam("file") MultipartFile file) {
         try {
             electorService.addElectorFromExcel(file);
@@ -58,7 +58,7 @@ public class ElectorController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete-elector/{id}")
     public ResponseEntity<String> deleteElector(@PathVariable int id) {
         electorService.deleteElectorById(id);
         return ResponseEntity.ok("Elector deleted successfully");
