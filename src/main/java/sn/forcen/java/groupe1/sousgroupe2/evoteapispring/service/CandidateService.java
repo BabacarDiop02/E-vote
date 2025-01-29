@@ -26,13 +26,13 @@ public class CandidateService {
     }
 
     public CandidateDTO getCandidateById(int id) {
-        return candidateMapper.toDTO(this.candidateRepository.findByIdAndEnabledTrue(id).orElseThrow(() -> new RuntimeException("Candidate not found")));
+        return this.candidateMapper.toDTO(this.candidateRepository.findByIdAndEnabledTrue(id).orElseThrow(() -> new RuntimeException("Candidate not found")));
     }
 
     public CandidateDTO createCandidate(CandidateDTO candidateDTO) {
         Candidate candidate = this.candidateMapper.toEntity(candidateDTO);
         this.candidateRepository.save(candidate);
-        return candidateMapper.toDTO(candidate);
+        return this.candidateMapper.toDTO(candidate);
     }
 
     public CandidateDTO updateCandidate(CandidateDTO candidateDTO) {

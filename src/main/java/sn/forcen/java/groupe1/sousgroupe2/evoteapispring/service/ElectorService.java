@@ -22,21 +22,21 @@ public class ElectorService {
     }
 
     public List<Elector> getAllElector() {
-        return electorRepository.findByEnabledTrue();
+        return this.electorRepository.findByEnabledTrue();
     }
 
     public Elector getElectorById(int id) {
-        return electorRepository.findByIdAndEnabledTrue(id);
+        return this.electorRepository.findByIdAndEnabledTrue(id);
     }
 
     public Elector addElector(Elector elector) {
-        return electorRepository.save(elector);
+        return this.electorRepository.save(elector);
     }
 
     public Elector updateElector(Elector elector) {
         Elector electorToUpdate = this.getElectorById(elector.getId());
         if (electorToUpdate != null) {
-            return electorRepository.save(elector);
+            return this.electorRepository.save(elector);
         } else {
             throw new RuntimeException("Elector not found");
         }
@@ -67,7 +67,7 @@ public class ElectorService {
             electors.add(elector);
         }
 
-        electorRepository.saveAll(electors);
+        this.electorRepository.saveAll(electors);
         workbook.close();
     }
 
