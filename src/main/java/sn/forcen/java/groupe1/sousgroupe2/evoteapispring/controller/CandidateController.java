@@ -3,11 +3,12 @@ package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.CandidateDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.CandidateService;
 
+import java.io.IOException;
 import java.util.Set;
-
 
 @RestController
 @RequestMapping(path = "api/e-vote")
@@ -36,9 +37,13 @@ public class CandidateController {
     }
 
     @PostMapping("/create-candidate")
-    public ResponseEntity<CandidateDTO> createCandidate(@RequestBody CandidateDTO candidateDTO) {
-        CandidateDTO createdCandidateDTO = this.candidateService.createCandidate(candidateDTO);
-        return ResponseEntity.ok(createdCandidateDTO);
+    public ResponseEntity<?> createCandidate(@RequestBody CandidateDTO candidateDTO, @RequestBody MultipartFile fileProgram, @RequestBody MultipartFile imageCandidate) {
+        try {
+            CandidateDTO createdCandidateDTO = this.candidateService.createCandidate(candidateDTO, fileProgram, imageCandidate);
+            return ResponseEntity.ok(createdCandidateDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error add candidate !" + e.getMessage());
+        }
     }
 
     @PutMapping(path = "/update-candidate")

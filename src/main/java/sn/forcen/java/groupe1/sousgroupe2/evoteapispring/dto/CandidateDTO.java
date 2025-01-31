@@ -13,5 +13,4 @@ public class CandidateDTO {
     private String firstName;
     private String lastName;
     private String part;
-    private String programNameFile;
 }

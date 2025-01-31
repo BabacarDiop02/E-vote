@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.ElectorDTO;
@@ -58,7 +57,7 @@ public class ElectorController {
     }
 
     @PostMapping("/import-electors")
-    public ResponseEntity<String> importElectors(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> importElectors(@RequestBody MultipartFile file) {
         try {
             this.electorService.addElectorFromExcel(file);
             return ResponseEntity.ok("Electors added successfully");

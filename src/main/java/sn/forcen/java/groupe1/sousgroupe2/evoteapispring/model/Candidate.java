@@ -20,8 +20,13 @@ public class Candidate {
     @Column(name = "partie", nullable = false, unique = true)
     private String part;
 
+    @Builder.Default
     @Column(name = "programme")
-    private String programNameFile;
+    private String programNameFile = "";
+
+    @Builder.Default
+    @Column(name = "profile")
+    private String profileNameImage = "";
 
     @Builder.Default
     @Column(name = "activer")

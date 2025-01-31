@@ -9,6 +9,9 @@ import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Candidate;
 @Mapper(componentModel = "spring")
 public interface CandidateMapper {
     CandidateDTO toDTO(Candidate candidate);
+
+    @Mapping(target = "programNameFile", ignore = true)
+    @Mapping(target = "profileNameImage", ignore = true)
     @Mapping(target = "enabled", ignore = true)
     Candidate toEntity(CandidateDTO candidateDTO);
 }
