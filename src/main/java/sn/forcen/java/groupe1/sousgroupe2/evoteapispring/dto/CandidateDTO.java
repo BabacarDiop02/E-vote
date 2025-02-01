@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@NoArgsConstructor @AllArgsConstructor @Getter @Setter @ToString @Builder
+
+@NoArgsConstructor @AllArgsConstructor @Getter @Setter @Builder
 public class CandidateDTO {
     private int id;
     private String firstName;

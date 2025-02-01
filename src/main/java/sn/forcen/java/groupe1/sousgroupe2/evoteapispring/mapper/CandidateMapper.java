@@ -1,17 +1,21 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.CandidateDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Candidate;
 
+@Component
+public class CandidateMapper {
+    public CandidateDTO toDTO(Candidate candidate) {
+        CandidateDTO candidateDTO = new CandidateDTO();
+        BeanUtils.copyProperties(candidate, candidateDTO);
+        return candidateDTO;
+    }
 
-@Mapper(componentModel = "spring")
-public interface CandidateMapper {
-    CandidateDTO toDTO(Candidate candidate);
-
-    @Mapping(target = "programNameFile", ignore = true)
-    @Mapping(target = "profileNameImage", ignore = true)
-    @Mapping(target = "enabled", ignore = true)
-    Candidate toEntity(CandidateDTO candidateDTO);
+    public Candidate toEntity(CandidateDTO candidateDTO) {
+        Candidate candidate = new Candidate();
+        BeanUtils.copyProperties(candidateDTO, candidate);
+        return candidate;
+    }
 }

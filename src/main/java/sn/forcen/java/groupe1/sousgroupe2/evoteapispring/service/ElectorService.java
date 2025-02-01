@@ -1,9 +1,6 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service;
 
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.ElectorDTO;
@@ -60,17 +57,17 @@ public class ElectorService {
             if (row.getRowNum() == 0) continue;
 
             Elector elector = new Elector();
-            elector.setNationalIdentificationNumber(row.getCell(0).getStringCellValue());
-            elector.setFirstName(row.getCell(1).getStringCellValue());
-            elector.setLastName(row.getCell(2).getStringCellValue());
+            elector.setNationalIdentificationNumber(this.getStringCellValue(row.getCell(0)));
+            elector.setFirstName(this.getStringCellValue(row.getCell(1)));
+            elector.setLastName(this.getStringCellValue(row.getCell(2)));
             elector.setDateOfBirth(row.getCell(3).getDateCellValue());
-            elector.setPlaceOfBirth(row.getCell(4).getStringCellValue());
-            elector.setVoterNumber(row.getCell(5).getStringCellValue());
-            elector.setRegion(row.getCell(6).getStringCellValue());
-            elector.setDepartment(row.getCell(7).getStringCellValue());
-            elector.setBorough(row.getCell(8).getStringCellValue());
-            elector.setTown(row.getCell(9).getStringCellValue());
-            elector.setVotingPlace(row.getCell(10).getStringCellValue());
+            elector.setPlaceOfBirth(this.getStringCellValue(row.getCell(4)));
+            elector.setVoterNumber(this.getStringCellValue(row.getCell(5)));
+            elector.setRegion(this.getStringCellValue(row.getCell(6)));
+            elector.setDepartment(this.getStringCellValue(row.getCell(7)));
+            elector.setBorough(this.getStringCellValue(row.getCell(8)));
+            elector.setTown(this.getStringCellValue(row.getCell(9)));
+            elector.setVotingPlace(this.getStringCellValue(row.getCell(10)));
             elector.setPollingStation((long) row.getCell(11).getNumericCellValue());
 
             electors.add(elector);
@@ -84,5 +81,16 @@ public class ElectorService {
         Elector elector = this.electorRepository.findByIdAndEnabledTrue(id).orElseThrow(() -> new RuntimeException("Elector not found"));
         elector.setEnabled(false);
         electorRepository.save(elector);
+    }
+
+    private String getStringCellValue(Cell cell) {
+        if (cell == null) return "";
+
+        return switch (cell.getCellType()) {
+            case STRING -> cell.getStringCellValue();
+            case NUMERIC -> String.valueOf(cell.getNumericCellValue());
+            case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
+            default -> "";
+        };
     }
 }

@@ -2,15 +2,7 @@ package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.ElectorDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.ElectorService;
@@ -57,7 +49,7 @@ public class ElectorController {
     }
 
     @PostMapping("/import-electors")
-    public ResponseEntity<String> importElectors(@RequestBody MultipartFile file) {
+    public ResponseEntity<String> importElectors(@RequestParam(name = "file") MultipartFile file) {
         try {
             this.electorService.addElectorFromExcel(file);
             return ResponseEntity.ok("Electors added successfully");
