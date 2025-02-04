@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.UserDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.UserService;
 
+import java.util.Map;
+
 @Slf4j
 @RestController
 @AllArgsConstructor
@@ -21,5 +23,10 @@ public class UserController {
     public UserDTO registration(@RequestBody UserDTO userDTO) {
         log.info("registration");
         return this.userService.registerUser(userDTO);
+    }
+
+    @PostMapping(path = "/activation")
+    public void activation(@RequestBody Map<String, String> activation) {
+        this.userService.activation(activation);
     }
 }

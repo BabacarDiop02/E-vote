@@ -31,6 +31,7 @@ public class ConfigurationSecurityApplication {
                 .authorizeHttpRequests(
                         authorize -> authorize
                                 .requestMatchers(POST, "/registration").permitAll()
+                                .requestMatchers(POST, "/activation").permitAll()
                                 .anyRequest().authenticated()
                 ).build();
     }
