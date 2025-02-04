@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Set;
 
 @RestController
-@RequestMapping(path = "api/e-vote")
+//@RequestMapping(path = "api/e-vote")
 @CrossOrigin("*")
 public class ElectorController {
     private final ElectorService electorService;
