@@ -49,5 +49,6 @@ public class UserService {
         if (Instant.now().isAfter(validation.getExpiration())) throw new RuntimeException("Activation expired");
         User user = this.userRepository.findById(validation.getUser().getId()).orElseThrow(() -> new RuntimeException("User not found"));
         user.setEnabled(true);
+        this.userRepository.save(user);
     }
 }
