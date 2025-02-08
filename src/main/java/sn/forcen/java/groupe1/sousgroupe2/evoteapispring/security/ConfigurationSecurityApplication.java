@@ -21,6 +21,11 @@ import static org.springframework.http.HttpMethod.POST;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class ConfigurationSecurityApplication {
+    private static final String[] PUBLIC_ENDPOINTS = {
+            "/registration",
+            "/activation",
+            "/connection"
+    };
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -30,8 +35,7 @@ public class ConfigurationSecurityApplication {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers(POST, "/registration").permitAll()
-                                .requestMatchers(POST, "/activation").permitAll()
+                                .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                                 .anyRequest().authenticated()
                 ).build();
     }
@@ -48,23 +52,9 @@ public class ConfigurationSecurityApplication {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-
-// Base de donnée
-// LDAP
-// XML
-// JSON
-
-
-// Authentification
-// Autorisation
-
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-
-
+        authProvider.setUserDetailsService(this.userDetailsService);
+        authProvider.setPasswordEncoder(this.passwordEncoder());
         return authProvider;
-
     }
 }

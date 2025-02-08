@@ -1,4 +1,4 @@
-package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service;
+package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
