@@ -2,12 +2,6 @@
 version: '3.1'
 
 services:
-  adminer:
-    container_name: adminer-4.8.0-standalone
-    image: adminer:4.8.0-standalone
-    restart: always
-    ports:
-    - "9090:8080"
   smtp4dev:
     image: rnwood/smtp4dev:v3
     restart: always
