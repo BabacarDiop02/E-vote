@@ -24,7 +24,6 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
 
     @PostMapping(path = "/registration")
     public UserDTO registration(@RequestBody UserDTO userDTO) {
@@ -35,6 +34,16 @@ public class UserController {
     @PostMapping(path = "/activation")
     public void activation(@RequestBody Map<String, String> activation) {
         this.userService.activation(activation);
+    }
+
+    @PostMapping(path = "/update-password")
+    public void updatePassword(@RequestBody Map<String, String> param) {
+        this.userService.updatePassword(param);
+    }
+
+    @PostMapping(path = "/new-password")
+    public void newPassword(@RequestBody Map<String, String> param) {
+        this.userService.newPassword(param);
     }
 
     @PostMapping(path = "/connection")

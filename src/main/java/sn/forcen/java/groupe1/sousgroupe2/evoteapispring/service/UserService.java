@@ -1,6 +1,7 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.UserDTO;
@@ -24,6 +25,7 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final ElectorRepository electorRepository;
     private final ValidationService validationService;
+    private final UserDetailsService userDetailsService;
 
     public UserDTO registerUser(UserDTO userDTO) {
         User user = this.userMapper.toUser(userDTO);
@@ -48,6 +50,24 @@ public class UserService {
         Validation validation = this.validationService.readAccordingToCode(activation.get("code"));
         if (Instant.now().isAfter(validation.getExpiration())) throw new RuntimeException("Activation expired");
         User user = this.userRepository.findById(validation.getUser().getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        validation.setActivation(Instant.now());
         user.setEnabled(true);
+    }
+
+    public void updatePassword(Map<String, String> param) {
+        User user = (User) this.userDetailsService.loadUserByUsername(param.get("email"));
+        if (this.electorRepository.findByNationalIdentificationNumberAndFirstNameAndLastName(param.get("nin"), param.get("first-name"), param.get("last-name")).isPresent()) this.validationService.saveValidation(user);
+    }
+
+    public void newPassword(Map<String, String> param) {
+        User user = (User) this.userDetailsService.loadUserByUsername(param.get("email"));
+        final Validation validation = this.validationService.readAccordingToCode(param.get("code"));
+
+        if (validation.getUser().getEmail().equals(user.getEmail())) {
+            String encodedPassword = this.passwordEncoder.encode(param.get("password"));
+            user.setPassword(encodedPassword);
+            validation.setActivation(Instant.now());
+            this.userRepository.save(user);
+        }
     }
 }

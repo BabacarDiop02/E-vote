@@ -1,6 +1,12 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +26,7 @@ public class Validation {
     private Instant expiration;
     private Instant activation;
     private String code;
-    @OneToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH})
     private User user;
 }

@@ -1,8 +1,10 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.UserDTO;
+import org.springframework.transaction.annotation.Transactional;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.mapper.UserMapper;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.User;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Validation;
@@ -12,7 +14,7 @@ import java.time.Instant;
 import java.util.Random;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ValidationService {
@@ -38,5 +40,12 @@ public class ValidationService {
 
     public Validation readAccordingToCode(String code) {
         return this.validationRepository.findByCode(code).orElseThrow(() -> new RuntimeException("Your code is invalid"));
+    }
+
+    @Scheduled(cron = "0 */1 * * * *")
+    @Transactional
+    public void removeValidationAfterActivation() {
+        this.validationRepository.deleteAllByActivationIsBeforeOrExpirationIsBefore(Instant.now(), Instant.now());
+        log.info("Successfully removed validation");
     }
 }
