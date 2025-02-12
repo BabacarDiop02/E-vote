@@ -42,7 +42,7 @@ public class ValidationService {
         return this.validationRepository.findByCode(code).orElseThrow(() -> new RuntimeException("Your code is invalid"));
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
+    @Scheduled(cron = "0 */60 * * * *")
     @Transactional
     public void removeValidationAfterActivation() {
         this.validationRepository.deleteAllByActivationIsBeforeOrExpirationIsBefore(Instant.now(), Instant.now());
