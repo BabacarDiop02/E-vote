@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -33,9 +35,14 @@ public class JwtService {
     // Générer un JWT avec une expiration de 1 heure
     public String generateToken(String username) {
         long expirationTime = System.currentTimeMillis() + (1000 * 60 * 60);
+        User user = (User) this.userDetailsService.loadUserByUsername(username);
+        String roles = user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
         final String javaWebToken = Jwts.builder()
                 .subject(username)
+                .claim("roles", roles)
                 .issuedAt(new Date())
                 .expiration(new Date(expirationTime))
                 .signWith(this.getSigningKey())
@@ -44,7 +51,7 @@ public class JwtService {
         Jwt jwtBD = Jwt.builder()
                 .disable(false)
                 .expire(false)
-                .user((User) this.userDetailsService.loadUserByUsername(username))
+                .user(user)
                 .token(javaWebToken)
                 .build();
 

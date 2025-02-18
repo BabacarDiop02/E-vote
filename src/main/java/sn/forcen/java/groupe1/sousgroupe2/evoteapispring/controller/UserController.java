@@ -20,6 +20,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin("*")
 public class UserController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;

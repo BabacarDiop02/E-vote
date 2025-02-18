@@ -32,6 +32,7 @@ public class ConfigurationSecurityApplication {
             "/connection",
             "/update-password",
             "/new-password",
+            "/candidates"
     };
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
