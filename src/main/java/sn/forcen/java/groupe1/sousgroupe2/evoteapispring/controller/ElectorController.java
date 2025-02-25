@@ -1,5 +1,6 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,8 +10,11 @@ import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.ElectorDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.ElectorService;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+@Slf4j
 @RestController
 @CrossOrigin("*")
 public class ElectorController {
@@ -53,14 +57,27 @@ public class ElectorController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @PostMapping("/import-electors")
-    public ResponseEntity<String> importElectors(@RequestParam(name = "file") MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> importElectors(@RequestParam(name = "file") MultipartFile file) {
+        Map<String, Object> response = new HashMap<>();
+
         try {
             this.electorService.addElectorFromExcel(file);
-            return ResponseEntity.ok("Electors added successfully");
+            log.info("Electors added successfully");
+
+            response.put("success", true);
+            response.put("message", "Electors added successfully");
+
+            return ResponseEntity.ok(response);  // ✅ Retourne HTTP 200 avec JSON
         } catch (IOException e) {
-            return ResponseEntity.badRequest().body("Error while importing" + e.getMessage());
+            log.error("Electors not added successfully", e);
+
+            response.put("success", false);
+            response.put("message", "Error while importing: " + e.getMessage());
+
+            return ResponseEntity.badRequest().body(response);  // ❌ Retourne HTTP 400
         }
     }
+
 
     @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @DeleteMapping("/delete-elector/{id}")

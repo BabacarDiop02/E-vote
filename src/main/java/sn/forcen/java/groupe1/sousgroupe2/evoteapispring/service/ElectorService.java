@@ -70,10 +70,11 @@ public class ElectorService {
             elector.setVotingPlace(this.getStringCellValue(row.getCell(10)));
             elector.setPollingStation((long) row.getCell(11).getNumericCellValue());
 
-            electors.add(elector);
+            if (this.electorRepository.findByNationalIdentificationNumberAndFirstNameAndLastName(elector.getNationalIdentificationNumber(), elector.getFirstName(), elector.getLastName()).isEmpty()) electors.add(elector);
         }
 
-        this.electorRepository.saveAll(electors);
+        if (!electors.isEmpty()) this.electorRepository.saveAll(electors);
+
         workbook.close();
     }
 
