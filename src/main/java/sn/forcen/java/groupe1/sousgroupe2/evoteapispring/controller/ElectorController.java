@@ -81,8 +81,10 @@ public class ElectorController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @DeleteMapping("/delete-elector/{id}")
-    public ResponseEntity<String> deleteElectorById(@PathVariable int id) {
+    public ResponseEntity<Map<String, String>> deleteElectorById(@PathVariable int id) {
         this.electorService.deleteElectorById(id);
-        return ResponseEntity.ok("Elector deleted successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Deleted Candidate!");
+        return ResponseEntity.ok(response);
     }
 }

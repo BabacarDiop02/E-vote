@@ -13,6 +13,8 @@ import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.CandidateServic
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -80,8 +82,10 @@ public class CandidateController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @DeleteMapping(path = "/delete-candidate/{id}")
-    public ResponseEntity<String> deleteCandidateById(@PathVariable int id) {
+    public ResponseEntity<Map<String, String>> deleteCandidateById(@PathVariable int id) {
         this.candidateService.deleteCandidate(id);
-        return ResponseEntity.ok("Deleted Candidate!");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Deleted Candidate!");
+        return ResponseEntity.ok(response);
     }
 }
