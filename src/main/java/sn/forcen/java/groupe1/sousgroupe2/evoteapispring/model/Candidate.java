@@ -33,7 +33,7 @@ public class Candidate {
     private String portrait;
 
     @Column(name = "voix")
-    private Integer voice = 0;
+    private int voice = 0;
 
     @Builder.Default
     @Column(name = "programme")

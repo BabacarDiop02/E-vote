@@ -15,7 +15,7 @@ public class CandidateDTO {
     private Integer age;
     private String occupation;
     private String portrait;
-    private Integer voice = 0;
+    private int voice = 0;
     private String programNameFile = "";
     private String profileNameImage = "";
 }
