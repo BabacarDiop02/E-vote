@@ -37,6 +37,11 @@ public class VoteService {
         return "Vote successfully recorded!";
     }
 
+    public boolean alreadyVoted(String username) {
+        String voteHash = hashVote(username);
+        return voteRepository.existsByVoteHash(voteHash);
+    }
+
     private String hashVote(String username) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256"); // On utilise SHA-256

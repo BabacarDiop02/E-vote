@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.VoteService;
 
 import java.util.HashMap;
@@ -27,5 +24,12 @@ public class VoteController {
         Map<String, String> response = new HashMap<>();
         response.put("message", message);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/has-voted")
+    public ResponseEntity<Boolean> hasUserVoted() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        boolean hasVoted = this.voteService.alreadyVoted(username);
+        return ResponseEntity.ok(hasVoted);
     }
 }
