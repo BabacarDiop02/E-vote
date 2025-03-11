@@ -7,4 +7,5 @@ import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Vote;
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Integer> {
     boolean existsByVoteHash(String voteHash);
+    int countVoteByCandidate_Id(Integer candidateId);
 }
