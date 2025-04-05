@@ -22,8 +22,18 @@ public class Candidate {
     @Column(name = "nom", nullable = false)
     private String lastName;
 
-    @Column(name = "partie", nullable = false, unique = true)
-    private String part;
+    @Column(name = "age", nullable = false)
+    private Integer age;
+
+    @Column(name = "profession", nullable = false)
+    private String occupation;
+
+    @Lob
+    @Column(name = "portrait", columnDefinition = "TEXT")
+    private String portrait;
+
+    @Column(name = "voix")
+    private Integer voice = 0;
 
     @Builder.Default
     @Column(name = "programme")

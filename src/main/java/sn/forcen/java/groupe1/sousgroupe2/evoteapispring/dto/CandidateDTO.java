@@ -12,5 +12,10 @@ public class CandidateDTO {
     private int id;
     private String firstName;
     private String lastName;
-    private String part;
+    private Integer age;
+    private String occupation;
+    private String portrait;
+    private Integer voice = 0;
+    private String programNameFile = "";
+    private String profileNameImage = "";
 }
