@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity
 @Table(name = "candidats")
 @NoArgsConstructor @AllArgsConstructor @Getter @Setter @ToString @Builder
@@ -32,8 +34,8 @@ public class Candidate {
     @Column(name = "portrait", columnDefinition = "TEXT")
     private String portrait;
 
-    @Column(name = "voix")
-    private int voice = 0;
+    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> vote;
 
     @Builder.Default
     @Column(name = "programme")

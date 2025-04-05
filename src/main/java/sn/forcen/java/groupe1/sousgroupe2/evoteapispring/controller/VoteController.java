@@ -17,7 +17,7 @@ public class VoteController {
     private final VoteService voteService;
 
     @PreAuthorize("hasAuthority('ROLE_ELECTOR')")
-    @PostMapping("/voter")
+    @PostMapping(path = "/voter")
     public ResponseEntity<Map<String, String>> recordVote(@RequestParam Integer candidateId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String message = this.voteService.recordVote(candidateId, username);
@@ -26,10 +26,16 @@ public class VoteController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/has-voted")
+    @GetMapping(path = "/has-voted")
     public ResponseEntity<Boolean> hasUserVoted() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         boolean hasVoted = this.voteService.alreadyVoted(username);
         return ResponseEntity.ok(hasVoted);
+    }
+
+    @GetMapping(path = "/all-votes")
+    public ResponseEntity<Long> allVotes() {
+        Long allVotes = this.voteService.allVotes();
+        return ResponseEntity.ok(allVotes);
     }
 }

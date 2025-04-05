@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "vates")
+@Table(name = "votes")
 @AllArgsConstructor @NoArgsConstructor @Getter @Setter @Builder
 public class Vote {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

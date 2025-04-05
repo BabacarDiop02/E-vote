@@ -1,6 +1,5 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.security;
 
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +33,8 @@ public class ConfigurationSecurityApplication {
             "/new-password",
             "/candidates",
             "/candidate/**",
-            "/files/**"
+            "/files/**",
+            "/all-votes",
     };
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;

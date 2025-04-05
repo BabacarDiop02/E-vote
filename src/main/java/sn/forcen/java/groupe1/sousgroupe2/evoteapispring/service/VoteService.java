@@ -26,9 +26,6 @@ public class VoteService {
         }
 
         Candidate candidate = this.candidateRepository.findById(candidateId).orElseThrow(() -> new RuntimeException("Candidate not found"));
-        candidate.setVoice(candidate.getVoice() + 1);
-        this.candidateRepository.save(candidate);
-
         Vote vote = new Vote();
         vote.setCandidate(candidate);
         vote.setVoteHash(voteHash);
@@ -40,6 +37,10 @@ public class VoteService {
     public boolean alreadyVoted(String username) {
         String voteHash = hashVote(username);
         return voteRepository.existsByVoteHash(voteHash);
+    }
+
+    public Long allVotes() {
+        return this.voteRepository.count();
     }
 
     private String hashVote(String username) {
