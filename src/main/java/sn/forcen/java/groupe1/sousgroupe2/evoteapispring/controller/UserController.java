@@ -2,16 +2,17 @@ package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.AuthenticationDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.UserDTO;
+import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.UserProfile;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.JwtService;
+import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.UserProfileService;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.UserService;
 
 import java.util.Map;
@@ -19,12 +20,12 @@ import java.util.Map;
 @Slf4j
 @RestController
 @AllArgsConstructor
-//@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin("*")
 public class UserController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserProfileService userProfileService;
 
     @PostMapping(path = "/registration")
     public UserDTO registration(@RequestBody UserDTO userDTO) {
@@ -61,5 +62,12 @@ public class UserController {
     public ResponseEntity<String> disconnection() {
         this.jwtService.disconnection();
         return ResponseEntity.ok("Disconnected");
+    }
+
+    @GetMapping(path = "/user-profile")
+    public ResponseEntity<UserProfile> getUserProfile() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserProfile userProfile = this.userProfileService.getUserProfile(username);
+        return ResponseEntity.ok(userProfile);
     }
 }
