@@ -9,5 +9,4 @@ public class EVoteApiSpringApplication {
     public static void main(String[] args) {
         SpringApplication.run(EVoteApiSpringApplication.class, args);
     }
-
 }
