@@ -6,12 +6,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.AuthenticationDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.UserDTO;
+import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.security.JwtUtil;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.UserService;
 
 import java.util.Map;
@@ -23,6 +25,8 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
 
     @PostMapping(path = "/registration")
     public UserDTO registration(@RequestBody UserDTO userDTO) {
@@ -36,11 +40,12 @@ public class UserController {
     }
 
     @PostMapping(path = "/connection")
-    public Map<String, String> connection(@RequestBody AuthenticationDTO authenticationDTO) {
+    public String connection(@RequestBody AuthenticationDTO authenticationDTO) {
         final Authentication authenticate = this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authenticationDTO.username(), authenticationDTO.password())
         );
-        log.info("connection {}", authenticate.isAuthenticated());
+
+        if (authenticate.isAuthenticated()) return this.jwtUtil.generateToken(authenticationDTO.username());
         return null;
     }
 }
