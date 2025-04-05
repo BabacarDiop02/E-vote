@@ -19,7 +19,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+//@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin("*")
 public class UserController {
     private final UserService userService;

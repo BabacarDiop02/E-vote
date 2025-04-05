@@ -7,10 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.UserDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.mapper.UserMapper;
-import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Role;
-import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.User;
-import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.UserRole;
-import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Validation;
+import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.*;
+import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.repository.AdministratorRepository;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.repository.ElectorRepository;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.repository.UserRepository;
 
@@ -30,6 +28,7 @@ public class UserService {
     private final ElectorRepository electorRepository;
     private final ValidationService validationService;
     private final UserDetailsService userDetailsService;
+    private final AdministratorRepository administratorRepository;
 
     // inscription d'un utlilisateur
     public UserDTO registerUser(UserDTO userDTO) {
@@ -49,13 +48,19 @@ public class UserService {
         Role roleElector = Role.builder().libeller(UserRole.ELECTOR).build();
         roles.add(roleElector);
 
-        if (email.endsWith("administrator@evote.sn")) {
-            Role roleAdministrator = Role.builder().libeller(UserRole.ADMINISTRATOR).build();
-            roles.add(roleAdministrator);
-        }
-        if (email.endsWith("supervisor@evote.sn")) {
-            Role roleSupervisor = Role.builder().libeller(UserRole.SUPERVISOR).build();
-            roles.add(roleSupervisor);
+        if (email.endsWith("administrator@evote.sn") || email.endsWith("supervisor@evote.sn")) {
+            Administrator administrator = this.administratorRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Administrator not found"));
+
+            if (administrator != null) {
+                if (email.endsWith("administrator@evote.sn")) {
+                    Role roleAdministrator = Role.builder().libeller(UserRole.ADMINISTRATOR).build();
+                    roles.add(roleAdministrator);
+                }
+                if (email.endsWith("supervisor@evote.sn")) {
+                    Role roleSupervisor = Role.builder().libeller(UserRole.SUPERVISOR).build();
+                    roles.add(roleSupervisor);
+                }
+            }
         }
 
         user.setRoles(roles);
