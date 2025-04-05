@@ -2,6 +2,7 @@ package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.ElectorDTO;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.util.Set;
 
 @RestController
-//@RequestMapping(path = "api/e-vote")
 @CrossOrigin("*")
 public class ElectorController {
     private final ElectorService electorService;
@@ -20,6 +20,7 @@ public class ElectorController {
         this.electorService = electorService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERVISOR')")
     @GetMapping(path = "/electors")
     public ResponseEntity<Set<ElectorDTO>> getAllElector() {
         Set<ElectorDTO> electorsDTO = this.electorService.getAllElector();
@@ -36,18 +37,21 @@ public class ElectorController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @PostMapping(path = "/create-elector")
     public ResponseEntity<ElectorDTO> createElector(@RequestBody ElectorDTO electorDTO) {
         ElectorDTO newelectorDTO = this.electorService.addElector(electorDTO);
         return ResponseEntity.ok(newelectorDTO);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @PutMapping(path = "/update-elector")
     public ResponseEntity<ElectorDTO> updateElector(@RequestBody ElectorDTO electorDTO) {
         ElectorDTO electorDTOUpdated = this.electorService.updateElector(electorDTO);
         return ResponseEntity.ok(electorDTOUpdated);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @PostMapping("/import-electors")
     public ResponseEntity<String> importElectors(@RequestParam(name = "file") MultipartFile file) {
         try {
@@ -58,6 +62,7 @@ public class ElectorController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @DeleteMapping("/delete-elector/{id}")
     public ResponseEntity<String> deleteElectorById(@PathVariable int id) {
         this.electorService.deleteElectorById(id);

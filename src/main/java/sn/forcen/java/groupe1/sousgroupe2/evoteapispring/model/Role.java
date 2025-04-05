@@ -1,14 +1,11 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "role")
-@NoArgsConstructor @AllArgsConstructor @Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Getter @Setter @Builder
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

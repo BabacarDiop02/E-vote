@@ -2,6 +2,7 @@ package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.CandidateDTO;
@@ -10,7 +11,6 @@ import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.CandidateServic
 import java.util.Set;
 
 @RestController
-//@RequestMapping(path = "api/e-vote")
 @CrossOrigin("*")
 public class CandidateController {
     private final CandidateService candidateService;
@@ -35,6 +35,7 @@ public class CandidateController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @PostMapping("/create-candidate")
     public ResponseEntity<?> createCandidate(@RequestBody CandidateDTO candidateDTO, @RequestBody MultipartFile fileProgram, @RequestBody MultipartFile imageCandidate) {
         try {
@@ -45,12 +46,14 @@ public class CandidateController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @PutMapping(path = "/update-candidate")
     public ResponseEntity<CandidateDTO> updateCandidate(@RequestBody CandidateDTO candidateDTO) {
         CandidateDTO updatedCandidateDTO = this.candidateService.updateCandidate(candidateDTO);
         return ResponseEntity.ok(updatedCandidateDTO);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRATOR')")
     @DeleteMapping(path = "/delete-candidate/{id}")
     public ResponseEntity<String> deleteCandidateById(@PathVariable int id) {
         this.candidateService.deleteCandidate(id);
