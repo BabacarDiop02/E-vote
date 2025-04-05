@@ -33,7 +33,7 @@ public class ConfigurationSecurityApplication {
             "/update-password",
             "/new-password",
             "/candidates",
-            "/candidate/{id}",
+            "/candidate/**",
             "/files/**"
     };
     private final UserDetailsService userDetailsService;
