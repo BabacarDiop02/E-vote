@@ -1,5 +1,6 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model;
 
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,21 +13,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.Instant;
+import lombok.ToString;
 
 @Entity
-@Table(name = "validation")
-@NoArgsConstructor @AllArgsConstructor @Getter @Setter @Builder
-public class Validation {
+@Table(name = "java_web_token")
+@NoArgsConstructor @AllArgsConstructor @Getter @Setter @ToString @Builder
+public class Jwt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private Instant creation;
-    private Instant expiration;
-    private Instant activation;
-    private String code;
+    private boolean disable;
+    private boolean expire;
+    private String token;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE})
     private User user;
 }

@@ -27,7 +27,9 @@ public class ConfigurationSecurityApplication {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/registration",
             "/activation",
-            "/connection"
+            "/connection",
+            "/update-password",
+            "/new-password",
     };
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
