@@ -7,11 +7,10 @@ import org.springframework.web.multipart.MultipartFile;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.CandidateDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service.CandidateService;
 
-import java.io.IOException;
 import java.util.Set;
 
 @RestController
-@RequestMapping(path = "api/e-vote")
+//@RequestMapping(path = "api/e-vote")
 @CrossOrigin("*")
 public class CandidateController {
     private final CandidateService candidateService;

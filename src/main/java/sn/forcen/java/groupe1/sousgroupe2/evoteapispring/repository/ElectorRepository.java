@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ElectorRepository extends JpaRepository<Elector, Integer> {
-    Elector findByNationalIdentificationNumber(String nationalIdentificationNumber);
+    Optional<Elector> findByNationalIdentificationNumberAndFirstNameAndLastName(String nationalIdentificationNumber, String firstName, String lastName);
     List<Elector> findByEnabledTrue();
     Optional<Elector> findByIdAndEnabledTrue(int id);
 }

@@ -1,0 +1,18 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+  adminer:
+    container_name: adminer-4.8.0-standalone
+    image: adminer:4.8.0-standalone
+    restart: always
+    ports:
+    - "9090:8080"
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: always
+    ports:
+      # Change the number before : to the port the web interface should be accessible on
+      - '9091:80'
+      # Change the number before : to the port the SMTP server should be accessible on
+      - '9125:25'
