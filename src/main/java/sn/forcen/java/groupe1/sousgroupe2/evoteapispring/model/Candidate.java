@@ -1,7 +1,12 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "candidats")
@@ -20,8 +25,13 @@ public class Candidate {
     @Column(name = "partie", nullable = false, unique = true)
     private String part;
 
+    @Builder.Default
     @Column(name = "programme")
-    private String programNameFile;
+    private String programNameFile = "";
+
+    @Builder.Default
+    @Column(name = "profile")
+    private String profileNameImage = "";
 
     @Builder.Default
     @Column(name = "activer")

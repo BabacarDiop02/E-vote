@@ -1,11 +1,14 @@
 package sn.forcen.java.groupe1.sousgroupe2.evoteapispring.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.dto.CandidateDTO;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.mapper.CandidateMapper;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.model.Candidate;
 import sn.forcen.java.groupe1.sousgroupe2.evoteapispring.repository.CandidateRepository;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,31 +25,41 @@ public class CandidateService {
 
     public Set<CandidateDTO> getAllCandidates() {
         List<Candidate> candidates = this.candidateRepository.findByEnabledTrue();
-        return candidates.stream().map(candidateMapper::toDTO).collect(Collectors.toSet());
+        return candidates.stream().map(this.candidateMapper::toDTO).collect(Collectors.toSet());
     }
 
     public CandidateDTO getCandidateById(int id) {
         return this.candidateMapper.toDTO(this.candidateRepository.findByIdAndEnabledTrue(id).orElseThrow(() -> new RuntimeException("Candidate not found")));
     }
 
-    public CandidateDTO createCandidate(CandidateDTO candidateDTO) {
+    @Transactional
+    public CandidateDTO createCandidate(CandidateDTO candidateDTO, MultipartFile programFile, MultipartFile profileImage) throws Exception {
+        String profileImageName = "profile_" + candidateDTO.getId() + "_" + candidateDTO.getFirstName() + "_" + candidateDTO.getLastName();
+        File fileToSaveProfile = new File("uploads/profile/" + profileImageName + ".jpg");
+        profileImage.transferTo(fileToSaveProfile);
+
+        String programFileName = candidateDTO.getId() + "_" + candidateDTO.getFirstName() + "_" + candidateDTO.getLastName();
+        File fileToSaveProgram = new File("uploads/program/" + programFileName + ".pdf");
+        programFile.transferTo(fileToSaveProgram);
+
         Candidate candidate = this.candidateMapper.toEntity(candidateDTO);
-        this.candidateRepository.save(candidate);
-        return this.candidateMapper.toDTO(candidate);
+        candidate.setProgramNameFile(programFileName);
+        candidate.setProfileNameImage(profileImageName);
+        return this.candidateMapper.toDTO(this.candidateRepository.save(candidate));
     }
 
+    @Transactional
     public CandidateDTO updateCandidate(CandidateDTO candidateDTO) {
-        CandidateDTO candidateDTOUpdate = this.getCandidateById(candidateDTO.getId());
-        if (candidateDTO.getFirstName() != null) candidateDTOUpdate.setFirstName(candidateDTO.getFirstName());
-        if (candidateDTO.getLastName() != null) candidateDTOUpdate.setLastName(candidateDTO.getLastName());
-        if (candidateDTO.getPart() != null) candidateDTOUpdate.setPart(candidateDTO.getPart());
-        if (candidateDTO.getProgramNameFile() != null) candidateDTOUpdate.setProgramNameFile(candidateDTO.getProgramNameFile());
+        Candidate candidate = this.candidateRepository.findByIdAndEnabledTrue(candidateDTO.getId()).orElseThrow(() -> new RuntimeException("Candidate not found"));
+        if (candidateDTO.getFirstName() != null) candidate.setFirstName(candidateDTO.getFirstName());
+        if (candidateDTO.getLastName() != null) candidate.setLastName(candidateDTO.getLastName());
+        if (candidateDTO.getPart() != null) candidate.setPart(candidateDTO.getPart());
 
-        Candidate candidate = this.candidateMapper.toEntity(candidateDTOUpdate);
-        this.candidateRepository.save(candidate);
-        return candidateDTOUpdate;
+        Candidate candidateUpdate = this.candidateRepository.save(candidate);
+        return this.candidateMapper.toDTO(candidateUpdate);
     }
 
+    @Transactional
     public void deleteCandidate(int id) {
         Candidate candidate = this.candidateRepository.findByIdAndEnabledTrue(id).orElseThrow(() -> new RuntimeException("Candidate not found"));
         candidate.setEnabled(false);
