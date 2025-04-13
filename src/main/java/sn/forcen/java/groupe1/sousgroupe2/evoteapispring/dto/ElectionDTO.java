@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor @AllArgsConstructor @Getter @Setter @Builder
 public class ElectionDTO {
@@ -16,5 +17,6 @@ public class ElectionDTO {
     private LocalDate endDate;
     private String type;
     private String status;
+    private List<String> candidates;
     private int allVotes;
 }

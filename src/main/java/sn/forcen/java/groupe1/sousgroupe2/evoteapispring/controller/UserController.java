@@ -70,4 +70,10 @@ public class UserController {
         UserProfile userProfile = this.userProfileService.getUserProfile(username);
         return ResponseEntity.ok(userProfile);
     }
+
+    @GetMapping(path = "/all-users")
+    public ResponseEntity<Long> allUsers() {
+        Long allUsers = this.userService.allUsersCounts();
+        return ResponseEntity.ok(allUsers);
+    }
 }

@@ -94,4 +94,8 @@ public class ElectorService {
             default -> "";
         };
     }
+
+    public Long allElectorsCount() {
+        return this.electorRepository.count();
+    }
 }

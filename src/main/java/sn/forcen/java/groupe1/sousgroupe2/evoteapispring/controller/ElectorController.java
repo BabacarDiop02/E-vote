@@ -87,4 +87,10 @@ public class ElectorController {
         response.put("message", "Deleted Candidate!");
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping(path = "/all-electors")
+    public ResponseEntity<Long> allElectors() {
+        Long allElectors = this.electorService.allElectorsCount();
+        return ResponseEntity.ok(allElectors);
+    }
 }

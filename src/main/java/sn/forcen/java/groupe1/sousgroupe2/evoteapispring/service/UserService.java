@@ -96,4 +96,8 @@ public class UserService {
             this.userRepository.save(user);
         }
     }
+
+    public Long allUsersCounts() {
+        return this.userRepository.count();
+    }
 }

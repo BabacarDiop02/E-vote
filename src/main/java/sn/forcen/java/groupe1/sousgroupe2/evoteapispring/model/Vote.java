@@ -27,4 +27,8 @@ public class Vote {
 
     @Column(nullable = false, unique = true)
     private String voteHash;
+
+    @ManyToOne
+    @JoinColumn(name = "election_id")
+    private Election election;
 }

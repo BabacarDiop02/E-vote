@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "elections")
@@ -34,4 +35,10 @@ public class Election {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ElectionStatus status;
+
+    @OneToMany(mappedBy = "election", cascade = CascadeType.ALL)
+    private List<Candidate> candidates;
+
+    @OneToMany(mappedBy = "election", cascade = CascadeType.ALL)
+    private List<Vote> votes;
 }
